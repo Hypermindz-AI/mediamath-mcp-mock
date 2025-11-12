@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "mediamath-mcp-mock": {
+      "command": "node",
+      "args": [
+        "/Users/dineshbhat/sandbox/hypermindz/mediamath-mcp-mock/dist/stdio-server.js"
+      ],
+      "env": {}
+    }
+  }
+}

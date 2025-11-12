@@ -1,0 +1,47 @@
+# Claude Code Project Configuration
+
+## Project Context
+This is the MediaMath MCP Mock Server project - a production-ready Model Context Protocol server implementing the MediaMath campaign management API.
+
+## Key Files to Reference
+- SESSION_CONTEXT.md - Complete development session context and current state
+- docs/IMPLEMENTATION_PLAN.md - 8-week implementation roadmap
+- src/lib/mcp/README.md - MCP protocol layer documentation
+- src/lib/data/README.md - Mock data layer documentation
+
+## Current Status
+Foundation phase complete:
+- ✅ MCP protocol layer (2,000 lines) in src/lib/mcp/
+- ✅ Mock data layer (2,500 lines) in src/lib/data/
+- ✅ 600 realistic mock records across 10 entity types
+- ⏳ Next.js project initialization in progress
+
+## Next Steps Priority
+1. Complete Next.js project setup
+2. Implement utility functions (response, errors, pagination, validation)
+3. Implement OAuth 2.0 authentication layer
+4. Create main MCP API endpoint
+5. Implement 28 MCP tools
+
+## Important Notes
+- Use TypeScript strict mode throughout
+- Follow MCP 0.1.0 specification exactly
+- All write operations restricted to organization ID 100048 (ACME)
+- Use cursor-based pagination (max 25 per page)
+- Dual response format: JSON + human-readable guidance
+- Include tool annotations: readOnlyHint, destructiveHint, idempotentHint, openWorldHint
+
+## Dependencies
+Core: next@14, react@18, jsonwebtoken, uuid, zod, @faker-js/faker
+Dev: typescript, vitest, playwright, eslint, tailwindcss
+
+## Testing
+- Unit tests in tests/unit/ using Vitest
+- Integration tests in tests/integration/
+- E2E tests in tests/e2e/ using Playwright
+- Target: >80% code coverage
+
+## Deployment
+- Platform: Vercel
+- Environment: Production + Development
+- Config: vercel.json with rewrites and CORS headers
