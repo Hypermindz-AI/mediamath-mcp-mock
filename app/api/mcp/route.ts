@@ -191,7 +191,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     // Validate session ownership
-    const session = getSession(sessionId);
+    const session = await getSession(sessionId);
     if (!session) {
       return NextResponse.json(
         {
