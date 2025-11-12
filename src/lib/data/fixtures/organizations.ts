@@ -9,7 +9,7 @@ export const organizations: Organization[] = [
   {
     id: 100048,
     name: 'ACME Corporation',
-    status: true,
+    status: 'active',
     organization_type: 'agency',
     city: 'San Francisco',
     state: 'CA',
@@ -20,7 +20,7 @@ export const organizations: Organization[] = [
   {
     id: 100001,
     name: 'Global Media Networks',
-    status: true,
+    status: 'active',
     organization_type: 'network',
     city: 'New York',
     state: 'NY',
@@ -31,7 +31,7 @@ export const organizations: Organization[] = [
   {
     id: 100002,
     name: 'Digital Dynamics Agency',
-    status: true,
+    status: 'active',
     organization_type: 'agency',
     city: 'Los Angeles',
     state: 'CA',
@@ -42,7 +42,7 @@ export const organizations: Organization[] = [
   {
     id: 100003,
     name: 'Premier Advertising Group',
-    status: true,
+    status: 'active',
     organization_type: 'advertiser',
     city: 'Chicago',
     state: 'IL',
@@ -53,7 +53,7 @@ export const organizations: Organization[] = [
   {
     id: 100004,
     name: 'Sunrise Media Holdings',
-    status: true,
+    status: 'active',
     organization_type: 'network',
     city: 'Austin',
     state: 'TX',
@@ -64,7 +64,7 @@ export const organizations: Organization[] = [
   {
     id: 100005,
     name: 'Pacific Coast Marketing',
-    status: true,
+    status: 'active',
     organization_type: 'agency',
     city: 'Seattle',
     state: 'WA',
@@ -86,7 +86,7 @@ export const organizations: Organization[] = [
   {
     id: 100007,
     name: 'Zenith Digital Networks',
-    status: true,
+    status: 'active',
     organization_type: 'network',
     city: 'Miami',
     state: 'FL',
@@ -97,7 +97,7 @@ export const organizations: Organization[] = [
   {
     id: 100008,
     name: 'Horizon Media Solutions',
-    status: true,
+    status: 'active',
     organization_type: 'advertiser',
     city: 'Denver',
     state: 'CO',
@@ -108,7 +108,7 @@ export const organizations: Organization[] = [
   {
     id: 100009,
     name: 'Spectrum Advertising Alliance',
-    status: true,
+    status: 'active',
     organization_type: 'agency',
     city: 'Atlanta',
     state: 'GA',
