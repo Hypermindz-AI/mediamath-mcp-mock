@@ -129,6 +129,7 @@ export function crudExamples() {
       start_date: '2025-01-01',
       end_date: '2025-01-31',
       total_budget: 50000,
+      spend_cap_amount: 55000,
       goal_type: 'spend',
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
