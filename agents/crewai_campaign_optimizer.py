@@ -9,8 +9,8 @@ from crewai import Agent, Task, Crew, Process
 from langchain.tools import Tool
 
 # MCP Server URL (update after deploying to Vercel)
-MCP_SERVER_URL = "http://localhost:3001/api/message"  # Local
-# MCP_SERVER_URL = "https://your-app.vercel.app/api/message"  # Production
+# MCP_SERVER_URL = "http://localhost:3001/api/message"  # Local
+MCP_SERVER_URL = "https://mediamath-mcp-mock-two.vercel.app/api/message"  # Production
 
 def call_mcp_tool(tool_name: str, arguments: dict) -> dict:
     """

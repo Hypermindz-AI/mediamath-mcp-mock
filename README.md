@@ -1,15 +1,25 @@
 # MediaMath MCP Mock Server
 
-A production-ready mock MCP (Model Context Protocol) server implementing the MediaMath campaign management API specification with OAuth 2.0 authentication.
+A production-ready mock MCP (Model Context Protocol) server implementing the MediaMath campaign management API specification with 28 tools for campaign management, analytics, and reporting.
+
+## 🚀 Live Demo
+
+**Production URL**: `https://mediamath-mcp-mock-two.vercel.app/api/message`
+
+Test the health endpoint:
+```bash
+curl https://mediamath-mcp-mock-two.vercel.app/api/message
+```
 
 ## Features
 
-- **OAuth 2.0 Authentication** - Mock authentication with Resource Owner Password Grant and Refresh Token flows
-- **JWT Token Management** - Secure token generation and validation
-- **10 Mock Users** - Pre-configured users across 3 organizations with different roles
-- **Role-Based Access Control** - ADMIN, MANAGER, TRADER, ANALYST, and VIEWER roles
+- **28 MCP Tools** - Complete MediaMath API mock with campaigns, strategies, organizations, users, supply, creative, and audience management
+- **Custom JSON-RPC Handler** - Stateless HTTP transport without Redis dependency
+- **Zero External Dependencies** - No database or caching layer required
+- **Comprehensive Mock Data** - Pre-configured campaigns, strategies, and organizations for testing
+- **AI Agent Ready** - Works with CrewAI, LangGraph, and other agent frameworks
 - **Next.js 14** - Built with modern App Router and TypeScript
-- **Vercel Ready** - Deploy to Vercel with one click
+- **Vercel Deployed** - Production-ready deployment
 
 ## Quick Start
 

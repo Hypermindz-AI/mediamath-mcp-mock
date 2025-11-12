@@ -10,8 +10,8 @@ from langgraph.graph import StateGraph, END
 from langchain_core.messages import HumanMessage, AIMessage
 
 # MCP Server URL
-MCP_SERVER_URL = "http://localhost:3001/api/message"  # Local
-# MCP_SERVER_URL = "https://your-app.vercel.app/api/message"  # Production
+# MCP_SERVER_URL = "http://localhost:3001/api/message"  # Local
+MCP_SERVER_URL = "https://mediamath-mcp-mock-two.vercel.app/api/message"  # Production
 
 def call_mcp_tool(tool_name: str, arguments: dict) -> dict:
     """Call an MCP tool via HTTP"""

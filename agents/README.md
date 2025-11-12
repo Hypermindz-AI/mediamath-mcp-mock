@@ -97,16 +97,20 @@ python langgraph_budget_analyzer.py
       Impact: 15-20% increase in reach
 ```
 
-## Connecting to Your Deployed Server
+## Connecting to the Deployed Server
 
-After deploying to Vercel, update the `MCP_SERVER_URL` in each script:
+The MCP server is deployed and publicly accessible at:
+
+**Production URL**: `https://mediamath-mcp-mock-two.vercel.app/api/message`
+
+Both agent scripts are configured to use the production URL by default. To use local development:
 
 ```python
 # Change from:
-MCP_SERVER_URL = "http://localhost:3000/api/message"
+MCP_SERVER_URL = "https://mediamath-mcp-mock-two.vercel.app/api/message"
 
 # To:
-MCP_SERVER_URL = "https://your-app.vercel.app/api/message"
+MCP_SERVER_URL = "http://localhost:3001/api/message"
 ```
 
 ## MCP Tools Used
