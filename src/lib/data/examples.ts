@@ -130,7 +130,6 @@ export function crudExamples() {
       end_date: '2025-01-31',
       total_budget: 50000,
       goal_type: 'spend',
-      timezone: 'America/New_York',
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     });
