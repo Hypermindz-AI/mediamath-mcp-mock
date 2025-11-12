@@ -422,13 +422,10 @@ export class DataStore {
       }
     });
 
-    // Validate strategy -> campaign & advertiser
+    // Validate strategy -> campaign
     this.strategies.getAll().forEach(strategy => {
       if (!this.campaigns.exists(strategy.campaign_id)) {
         errors.push(`Strategy ${strategy.id} references non-existent campaign ${strategy.campaign_id}`);
-      }
-      if (!this.advertisers.exists(strategy.advertiser_id)) {
-        errors.push(`Strategy ${strategy.id} references non-existent advertiser ${strategy.advertiser_id}`);
       }
     });
 

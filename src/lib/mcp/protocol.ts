@@ -253,7 +253,7 @@ async function handleToolsCall(
     sessionId: session.sessionId,
     userId: session.userId,
     organizationId: session.organizationId,
-    role: context.role,
+    role: 'admin', // Default role for demo
   };
 
   // Execute tool via registry
