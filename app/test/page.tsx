@@ -159,8 +159,8 @@ export default function TestUI() {
     const isRequired = selectedTool?.inputSchema.required?.includes(key);
 
     return (
-      <div key={key} className="mb-4">
-        <label className="block text-sm font-medium mb-1">
+      <div key={key} className="mb-2">
+        <label className="block text-[10px] font-medium mb-0.5">
           {key}
           {isRequired && <span className="text-red-500 ml-1">*</span>}
         </label>
@@ -169,10 +169,10 @@ export default function TestUI() {
           placeholder={schema.description || `Enter ${key}`}
           value={parameters[key] || ''}
           onChange={(e) => updateParameter(key, e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
         />
         {schema.description && (
-          <p className="text-xs text-gray-500 mt-1">{schema.description}</p>
+          <p className="text-[9px] text-gray-500 mt-0.5">{schema.description}</p>
         )}
       </div>
     );
@@ -189,16 +189,11 @@ export default function TestUI() {
         </div>
 
         {/* API Key Input */}
-        <div className="mb-6 bg-white rounded-lg shadow p-4">
-          <div className="flex items-center gap-4">
+        <div className="mb-4 bg-white rounded-lg shadow p-3">
+          <div className="flex items-center gap-3">
             <div className="flex-1">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                API Key (Optional)
-                {authEnabled && (
-                  <span className="text-red-500 ml-2 text-xs">
-                    Authentication required
-                  </span>
-                )}
+              <label className="block text-xs font-medium text-gray-700 mb-1">
+                API Key {authEnabled && <span className="text-red-500">*</span>}
               </label>
               <input
                 type="password"
@@ -208,41 +203,38 @@ export default function TestUI() {
                   setApiKey(e.target.value);
                   setError(null);
                 }}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-2 py-1.5 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
               />
-              <p className="text-xs text-gray-500 mt-1">
-                Leave empty if server is public. Stored in browser localStorage.
-              </p>
             </div>
             <button
               onClick={fetchTools}
-              className="mt-6 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
+              className="mt-5 px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
             >
               Reconnect
             </button>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
           {/* Tool List */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow p-4">
-              <h2 className="text-lg font-semibold mb-4">
-                Available Tools ({tools.length})
+            <div className="bg-white rounded-lg shadow p-3">
+              <h2 className="text-sm font-semibold mb-2">
+                Tools ({tools.length})
               </h2>
-              <div className="space-y-2 max-h-96 overflow-y-auto">
+              <div className="space-y-1 max-h-[calc(100vh-240px)] overflow-y-auto">
                 {tools.map((tool) => (
                   <button
                     key={tool.name}
                     onClick={() => handleToolSelect(tool)}
-                    className={`w-full text-left px-3 py-2 rounded-md transition-colors ${
+                    className={`w-full text-left px-2 py-1.5 rounded transition-colors ${
                       selectedTool?.name === tool.name
                         ? 'bg-blue-100 border-blue-500 border'
                         : 'bg-gray-50 hover:bg-gray-100 border border-transparent'
                     }`}
                   >
-                    <div className="font-medium text-sm">{tool.name}</div>
-                    <div className="text-xs text-gray-500 truncate">
+                    <div className="font-medium text-xs">{tool.name}</div>
+                    <div className="text-[10px] text-gray-500 truncate">
                       {tool.description}
                     </div>
                   </button>
@@ -251,25 +243,24 @@ export default function TestUI() {
             </div>
           </div>
 
-          {/* Tool Details & Execution */}
-          <div className="lg:col-span-2">
+          {/* Tool Form */}
+          <div className="lg:col-span-1">
             {selectedTool ? (
-              <div className="space-y-6">
-                {/* Tool Info */}
-                <div className="bg-white rounded-lg shadow p-6">
-                  <h2 className="text-xl font-semibold mb-2">
-                    {selectedTool.name}
-                  </h2>
-                  <p className="text-gray-600 mb-4">
-                    {selectedTool.description}
-                  </p>
+              <div className="bg-white rounded-lg shadow p-3">
+                <h2 className="text-base font-semibold mb-1">
+                  {selectedTool.name}
+                </h2>
+                <p className="text-xs text-gray-600 mb-3">
+                  {selectedTool.description}
+                </p>
 
-                  {/* Parameters */}
+                {/* Parameters */}
+                <div className="max-h-[calc(100vh-320px)] overflow-y-auto">
                   {selectedTool.inputSchema.properties &&
                     Object.keys(selectedTool.inputSchema.properties).length >
                       0 && (
-                      <div>
-                        <h3 className="text-md font-semibold mb-3">
+                      <div className="mb-3">
+                        <h3 className="text-xs font-semibold mb-2">
                           Parameters
                         </h3>
                         {Object.entries(
@@ -279,89 +270,21 @@ export default function TestUI() {
                         )}
                       </div>
                     )}
-
-                  {/* Execute Button */}
-                  <button
-                    onClick={executeTool}
-                    disabled={loading}
-                    className="w-full mt-4 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
-                  >
-                    {loading ? 'Executing...' : 'Execute Tool'}
-                  </button>
                 </div>
 
-                {/* Error Display */}
-                {error && (
-                  <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                    <h3 className="text-red-800 font-semibold mb-2">Error</h3>
-                    <p className="text-red-700">{error}</p>
-                  </div>
-                )}
-
-                {/* Result Display */}
-                {result && (
-                  <div className="bg-white rounded-lg shadow p-6">
-                    <h3 className="text-lg font-semibold mb-3">Result</h3>
-                    {result.content && result.content.length > 0 && (
-                      <div className="space-y-3">
-                        {result.content.map((item: any, idx: number) => (
-                          <div
-                            key={idx}
-                            className="bg-gray-50 rounded p-4 border border-gray-200"
-                          >
-                            {item.type === 'text' && (
-                              <pre className="text-sm overflow-x-auto whitespace-pre-wrap">
-                                {typeof item.text === 'string'
-                                  ? item.text
-                                  : JSON.stringify(
-                                      JSON.parse(item.text),
-                                      null,
-                                      2
-                                    )}
-                              </pre>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* Raw JSON */}
-                {(rawRequest || rawResponse) && (
-                  <div className="bg-white rounded-lg shadow p-6">
-                    <h3 className="text-lg font-semibold mb-3">
-                      Raw JSON-RPC
-                    </h3>
-
-                    {rawRequest && (
-                      <div className="mb-4">
-                        <h4 className="text-sm font-medium text-gray-700 mb-2">
-                          Request
-                        </h4>
-                        <pre className="bg-gray-900 text-green-400 p-4 rounded text-xs overflow-x-auto">
-                          {rawRequest}
-                        </pre>
-                      </div>
-                    )}
-
-                    {rawResponse && (
-                      <div>
-                        <h4 className="text-sm font-medium text-gray-700 mb-2">
-                          Response
-                        </h4>
-                        <pre className="bg-gray-900 text-green-400 p-4 rounded text-xs overflow-x-auto">
-                          {rawResponse}
-                        </pre>
-                      </div>
-                    )}
-                  </div>
-                )}
+                {/* Execute Button */}
+                <button
+                  onClick={executeTool}
+                  disabled={loading}
+                  className="w-full mt-2 bg-blue-600 text-white py-1.5 px-3 text-sm rounded hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                >
+                  {loading ? 'Executing...' : 'Execute Tool'}
+                </button>
               </div>
             ) : (
-              <div className="bg-white rounded-lg shadow p-12 text-center">
+              <div className="bg-white rounded-lg shadow p-8 text-center">
                 <svg
-                  className="mx-auto h-12 w-12 text-gray-400"
+                  className="mx-auto h-8 w-8 text-gray-400"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -373,14 +296,97 @@ export default function TestUI() {
                     d="M13 10V3L4 14h7v7l9-11h-7z"
                   />
                 </svg>
-                <h3 className="mt-2 text-lg font-medium text-gray-900">
+                <h3 className="mt-2 text-sm font-medium text-gray-900">
                   No tool selected
                 </h3>
-                <p className="mt-1 text-sm text-gray-500">
-                  Select a tool from the list to get started
+                <p className="mt-1 text-xs text-gray-500">
+                  Select a tool from the list
                 </p>
               </div>
             )}
+          </div>
+
+          {/* Results Panel */}
+          <div className="lg:col-span-2">
+            <div className="bg-white rounded-lg shadow p-3 max-h-[calc(100vh-240px)] overflow-y-auto">
+              <h2 className="text-sm font-semibold mb-2">Results</h2>
+
+              {/* Error Display */}
+              {error && (
+                <div className="bg-red-50 border border-red-200 rounded p-2 mb-3">
+                  <h3 className="text-red-800 font-semibold text-xs mb-1">Error</h3>
+                  <p className="text-red-700 text-xs">{error}</p>
+                </div>
+              )}
+
+              {/* Result Display */}
+              {result && (
+                <div className="mb-3">
+                  <h3 className="text-xs font-semibold mb-2">Result</h3>
+                  {result.content && result.content.length > 0 && (
+                    <div className="space-y-2">
+                      {result.content.map((item: any, idx: number) => (
+                        <div
+                          key={idx}
+                          className="bg-gray-50 rounded p-2 border border-gray-200"
+                        >
+                          {item.type === 'text' && (
+                            <pre className="text-[11px] overflow-x-auto whitespace-pre-wrap">
+                              {typeof item.text === 'string'
+                                ? item.text
+                                : JSON.stringify(
+                                    JSON.parse(item.text),
+                                    null,
+                                    2
+                                  )}
+                            </pre>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Raw JSON */}
+              {(rawRequest || rawResponse) && (
+                <div>
+                  <h3 className="text-xs font-semibold mb-2">
+                    Raw JSON-RPC
+                  </h3>
+
+                  {rawRequest && (
+                    <div className="mb-2">
+                      <h4 className="text-[10px] font-medium text-gray-700 mb-1">
+                        Request
+                      </h4>
+                      <pre className="bg-gray-900 text-green-400 p-2 rounded text-[10px] overflow-x-auto">
+                        {rawRequest}
+                      </pre>
+                    </div>
+                  )}
+
+                  {rawResponse && (
+                    <div>
+                      <h4 className="text-[10px] font-medium text-gray-700 mb-1">
+                        Response
+                      </h4>
+                      <pre className="bg-gray-900 text-green-400 p-2 rounded text-[10px] overflow-x-auto">
+                        {rawResponse}
+                      </pre>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Empty State */}
+              {!error && !result && !rawRequest && !rawResponse && (
+                <div className="text-center py-12 text-gray-400">
+                  <p className="text-xs">No results yet</p>
+                  <p className="text-[10px] mt-1">Execute a tool to see results here</p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
