@@ -21,6 +21,23 @@ export default function TestUI() {
   const [error, setError] = useState<string | null>(null);
   const [rawRequest, setRawRequest] = useState<string>('');
   const [rawResponse, setRawResponse] = useState<string>('');
+  const [apiKey, setApiKey] = useState<string>('');
+  const [authEnabled, setAuthEnabled] = useState<boolean>(false);
+
+  // Load API key from localStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem('mcp_api_key');
+    if (saved) {
+      setApiKey(saved);
+    }
+  }, []);
+
+  // Save API key to localStorage when changed
+  useEffect(() => {
+    if (apiKey) {
+      localStorage.setItem('mcp_api_key', apiKey);
+    }
+  }, [apiKey]);
 
   // Fetch tools on mount
   useEffect(() => {
@@ -29,9 +46,18 @@ export default function TestUI() {
 
   const fetchTools = async () => {
     try {
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+      };
+
+      // Add API key if provided
+      if (apiKey) {
+        headers['X-API-Key'] = apiKey;
+      }
+
       const response = await fetch('/api/message', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({
           jsonrpc: '2.0',
           method: 'tools/list',
@@ -41,8 +67,17 @@ export default function TestUI() {
       });
 
       const data = await response.json();
+
+      // Check if auth is enabled
+      if (response.status === 401) {
+        setAuthEnabled(true);
+        setError('Authentication required. Please enter API key.');
+        return;
+      }
+
       if (data.result?.tools) {
         setTools(data.result.tools);
+        setAuthEnabled(false);
       }
     } catch (err) {
       setError('Failed to load tools');
@@ -69,14 +104,28 @@ export default function TestUI() {
     setRawRequest(JSON.stringify(request, null, 2));
 
     try {
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+      };
+
+      // Add API key if provided
+      if (apiKey) {
+        headers['X-API-Key'] = apiKey;
+      }
+
       const response = await fetch('/api/message', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify(request),
       });
 
       const data = await response.json();
       setRawResponse(JSON.stringify(data, null, 2));
+
+      if (response.status === 401) {
+        setError('Unauthorized - Invalid or missing API key');
+        return;
+      }
 
       if (data.error) {
         setError(data.error.message || 'Tool execution failed');
@@ -137,6 +186,41 @@ export default function TestUI() {
           <p className="text-gray-600 mt-2">
             Interactive testing interface for MediaMath MCP Mock Server
           </p>
+        </div>
+
+        {/* API Key Input */}
+        <div className="mb-6 bg-white rounded-lg shadow p-4">
+          <div className="flex items-center gap-4">
+            <div className="flex-1">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                API Key (Optional)
+                {authEnabled && (
+                  <span className="text-red-500 ml-2 text-xs">
+                    Authentication required
+                  </span>
+                )}
+              </label>
+              <input
+                type="password"
+                placeholder="Enter API key if authentication is enabled"
+                value={apiKey}
+                onChange={(e) => {
+                  setApiKey(e.target.value);
+                  setError(null);
+                }}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Leave empty if server is public. Stored in browser localStorage.
+              </p>
+            </div>
+            <button
+              onClick={fetchTools}
+              className="mt-6 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
+            >
+              Reconnect
+            </button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

@@ -24,7 +24,26 @@ const JSON_RPC_ERRORS = {
   METHOD_NOT_FOUND: { code: -32601, message: "Method not found" },
   INVALID_PARAMS: { code: -32602, message: "Invalid params" },
   INTERNAL_ERROR: { code: -32603, message: "Internal error" },
+  UNAUTHORIZED: { code: -32001, message: "Unauthorized" },
 };
+
+/**
+ * Simple API Key Authentication
+ * Set MCP_API_KEY environment variable to enable auth
+ * If not set, API is public (no auth required)
+ */
+function checkAuth(req: NextRequest): boolean {
+  const apiKey = process.env.MCP_API_KEY;
+
+  // If no API key configured, allow public access
+  if (!apiKey) {
+    return true;
+  }
+
+  // Check X-API-Key header
+  const requestKey = req.headers.get("X-API-Key");
+  return requestKey === apiKey;
+}
 
 /**
  * Create JSON-RPC 2.0 success response
@@ -122,6 +141,22 @@ function handlePing(id: any) {
  * Main POST handler for JSON-RPC 2.0 requests
  */
 export async function POST(req: NextRequest) {
+  // Check authentication
+  if (!checkAuth(req)) {
+    return NextResponse.json(
+      {
+        jsonrpc: "2.0",
+        id: null,
+        error: {
+          code: -32001,
+          message: "Unauthorized - Invalid or missing API key",
+          data: "Provide X-API-Key header with valid API key"
+        }
+      },
+      { status: 401 }
+    );
+  }
+
   try {
     // Parse JSON-RPC request
     const body = await req.json();
@@ -171,6 +206,18 @@ export async function POST(req: NextRequest) {
  * GET handler (some MCP clients use GET for health checks)
  */
 export async function GET(req: NextRequest) {
+  // Check authentication
+  if (!checkAuth(req)) {
+    return NextResponse.json(
+      {
+        status: "unauthorized",
+        message: "Invalid or missing API key",
+        hint: "Provide X-API-Key header with valid API key"
+      },
+      { status: 401 }
+    );
+  }
+
   return NextResponse.json({
     status: "healthy",
     server: "mediamath-mcp-mock",
@@ -178,6 +225,7 @@ export async function GET(req: NextRequest) {
     transport: "http",
     protocol: "mcp/2024-11-05",
     tools_count: 28,
+    auth_enabled: !!process.env.MCP_API_KEY,
   });
 }
 
@@ -190,7 +238,7 @@ export async function OPTIONS(req: NextRequest) {
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization, X-API-Key",
     },
   });
 }
