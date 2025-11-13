@@ -148,10 +148,16 @@ export default function TestUI() {
     setRawResponse('');
   };
 
-  const updateParameter = (key: string, value: string) => {
+  const updateParameter = (key: string, value: string, type?: string) => {
+    // Convert to proper type based on schema
+    let typedValue: any = value;
+    if (type === 'number' && value !== '') {
+      typedValue = Number(value);
+    }
+
     setParameters((prev) => ({
       ...prev,
-      [key]: value,
+      [key]: typedValue,
     }));
   };
 
@@ -167,8 +173,8 @@ export default function TestUI() {
         <input
           type={schema.type === 'number' ? 'number' : 'text'}
           placeholder={schema.description || `Enter ${key}`}
-          value={parameters[key] || ''}
-          onChange={(e) => updateParameter(key, e.target.value)}
+          value={parameters[key] ?? ''}
+          onChange={(e) => updateParameter(key, e.target.value, schema.type)}
           className="w-full px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
         />
         {schema.description && (
